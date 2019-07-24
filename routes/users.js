@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 const User = require("../models/users");
-const restricted = require("../middlewares/index");
+const { generateToken, verifyToken } = require("../middlewares");
 /**
  * METHOD: POST
  * ROUTE: /api/auth/login
@@ -13,7 +13,7 @@ const restricted = require("../middlewares/index");
 router.post("/login", async (req, res) => {
   try {
     let { username, password } = req.body;
-    password = String(password)
+    password = String(password);
     const existingUser = await User.getByUsername(username);
     if (existingUser.length === 0) {
       return res
@@ -27,16 +27,18 @@ router.post("/login", async (req, res) => {
     );
 
     if (isValidPassword === true) {
-        req.session.user = existingUser[0];
+      const token = generateToken({ id: existingUser[0].id });
       return res.json({
         status: "success",
-        message: `Welcome ${existingUser[0].username}, login successful`
+        message: `Welcome ${existingUser[0].username}, login successful`,
+        token
       });
     }
     return res
       .status(401)
       .json({ status: "error", message: "Invalid password" });
-  } catch (error) { console.log(error)
+  } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ status: "error", message: "Error logging in" });
@@ -88,7 +90,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/users", restricted, async (req, res) => {
+router.get("/users", verifyToken, async (req, res) => {
   const users = await User.get();
 
   return res.status(200).json({ status: "success", data: users });
