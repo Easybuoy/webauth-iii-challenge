@@ -1,0 +1,25 @@
+{
+  "name": "webauth-iii-challenge",
+  "version": "1.0.0",
+  "description": "## Topics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Easybuoy/webauth-iii-challenge.git"
+  },
+  "author": "EZEKIEL EKUNOLA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Easybuoy/webauth-iii-challenge/issues"
+  },
+  "homepage": "https://github.com/Easybuoy/webauth-iii-challenge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.19.1",
+    "sqlite3": "^4.0.9"
+  }
+}
